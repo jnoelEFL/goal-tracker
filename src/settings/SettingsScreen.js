@@ -1,8 +1,8 @@
 import autobind from 'autobind-decorator'
 import React, { Component } from 'react'
+import DocumentTitle from 'react-document-title'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
 
 import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card'
 import Divider from 'material-ui/Divider'
@@ -19,7 +19,11 @@ import { addGoal, removeGoal, updateGoal } from '../reducers/goals'
 
 class SettingsScreen extends Component {
   render() {
-    return <h1>Settings coming soon</h1>
+    return (
+      <DocumentTitle title="Mes paramètres">
+        <h1>Settings coming soon</h1>
+      </DocumentTitle>
+    )
   }
 }
 

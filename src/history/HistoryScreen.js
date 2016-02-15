@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import DocumentTitle from 'react-document-title'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +11,11 @@ import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 
 class HistoryScreen extends Component {
   render() {
-    return <h1>History coming soon</h1>
+    return (
+      <DocumentTitle title="Mon historique">
+        <h1>History coming soon</h1>
+      </DocumentTitle>
+    )
   }
 }
 

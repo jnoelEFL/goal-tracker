@@ -1,6 +1,7 @@
 import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import DocumentTitle from 'react-document-title'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -40,35 +41,37 @@ export class TrackerScreen extends Component {
   render() {
     const { goals, today, todaysProgress } = this.props
     return (
-      <Card className="goalTracker">
-        <CardTitle
-          subtitle={<Gauge value={this.overallProgress()} />}
-          title={formatDate(today, 'LL')}
-        />
-        <CardText>
-          {goals.map((goal) => (
-            <GoalTrackerWidget
-              goal={goal}
-              key={goal.id}
-              onProgress={this.markGoalProgression}
-              progress={todaysProgress[goal.id] || 0}
+      <DocumentTitle title="Mes objectifs du jour">
+        <Card className="goalTracker">
+          <CardTitle
+            subtitle={<Gauge value={this.overallProgress()} />}
+            title={formatDate(today, 'LL')}
+          />
+          <CardText>
+            {goals.map((goal) => (
+              <GoalTrackerWidget
+                goal={goal}
+                key={goal.id}
+                onProgress={this.markGoalProgression}
+                progress={todaysProgress[goal.id] || 0}
+              />
+            ))}
+          </CardText>
+          <CardActions>
+            <RaisedButton
+              containerElement={<Link to="/history" />}
+              icon={<HistoryIcon />}
+              label="Historique"
+              secondary
             />
-          ))}
-        </CardText>
-        <CardActions>
-          <RaisedButton
-            containerElement={<Link to="/history" />}
-            icon={<HistoryIcon />}
-            label="Historique"
-            secondary
-          />
-          <RaisedButton
-            containerElement={<Link to="/settings" />}
-            icon={<SettingsIcon />}
-            label="Paramètres"
-          />
-        </CardActions>
-      </Card>
+            <RaisedButton
+              containerElement={<Link to="/settings" />}
+              icon={<SettingsIcon />}
+              label="Paramètres"
+            />
+          </CardActions>
+        </Card>
+      </DocumentTitle>
     )
   }
 }
