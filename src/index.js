@@ -1,7 +1,7 @@
-import { AppContainer } from 'react-hot-loader'
 import React from 'react'
-import RedBox from 'redbox-react'
 import { render } from 'react-dom'
+import { AppContainer } from 'react-hot-loader'
+import RedBox from 'redbox-react'
 
 import App from './App'
 
