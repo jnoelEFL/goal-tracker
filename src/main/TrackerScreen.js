@@ -2,6 +2,7 @@ import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -55,8 +56,17 @@ export class TrackerScreen extends Component {
           ))}
         </CardText>
         <CardActions>
-          <RaisedButton label="Historique" secondary icon={<HistoryIcon />} />
-          <RaisedButton label="Paramètres" icon={<SettingsIcon />} />
+          <RaisedButton
+            containerElement={<Link to="/history" />}
+            icon={<HistoryIcon />}
+            label="Historique"
+            secondary
+          />
+          <RaisedButton
+            containerElement={<Link to="/settings" />}
+            icon={<SettingsIcon />}
+            label="Paramètres"
+          />
         </CardActions>
       </Card>
     )
