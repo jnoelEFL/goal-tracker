@@ -1,4 +1,7 @@
+import autobind from 'autobind-decorator'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -7,10 +10,22 @@ import TextField from 'material-ui/TextField'
 
 import './LoginScreen.styl'
 
+import { logIn } from '../reducers/currentUser'
+
 export class LoginScreen extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  }
+
+  @autobind
+  login(event) {
+    event.preventDefault()
+    this.props.dispatch(logIn(this.userEmail, this.password))
+  }
+
   render() {
     return (
-      <form>
+      <form onSubmit={this.login}>
         <Card className="loginScreen">
           <CardTitle title="Goal Tracker" subtitle="Connexion" />
           <CardText>
@@ -19,6 +34,9 @@ export class LoginScreen extends Component {
               floatingLabelText="E-mail"
               fullWidth
               hintText="mon@email.tld"
+              onChange={(event) => {
+                this.userEmail = event.target.value
+              }}
               required
               type="email"
             />
@@ -26,6 +44,9 @@ export class LoginScreen extends Component {
               floatingLabelText="Mot de passe"
               fullWidth
               hintText="super mot de passe"
+              onChange={(event) => {
+                this.password = event.target.value
+              }}
               required
               type="password"
             />
@@ -45,4 +66,4 @@ export class LoginScreen extends Component {
   }
 }
 
-export default LoginScreen
+export default connect()(LoginScreen)
