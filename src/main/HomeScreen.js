@@ -1,23 +1,22 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import LoginScreen from '../auth/LoginScreen'
-import store from '../store'
 import TrackerScreen from './TrackerScreen'
 
 export class HomeScreen extends Component {
-  render() {
-    const { currentUser: { loginState }, goals, today, todaysProgress } = store
+  static propTypes = {
+    loggedIn: PropTypes.bool.isRequired,
+  }
 
-    return loginState === 'success' ? (
-      <TrackerScreen
-        goals={goals}
-        today={today}
-        todaysProgress={todaysProgress}
-      />
-    ) : (
-      <LoginScreen />
-    )
+  render() {
+    return this.props.loggedIn ? <TrackerScreen /> : <LoginScreen />
   }
 }
 
-export default HomeScreen
+function mapStateToProps({ currentUser: { loginState } }) {
+  return { loggedIn: loginState === 'success' }
+}
+
+export default connect(mapStateToProps)(HomeScreen)
