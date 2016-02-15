@@ -47,6 +47,11 @@ function nonNegativeIntegerString(props, propName, componentName) {
   return null
 }
 
+export const CurrentUserPropType = PropTypes.shape({
+  loginState: LoginStatePropType.isRequired,
+  email: PropTypes.string,
+})
+
 function requiredHistoryDayProgressesPropType(props, propName, componentName) {
   const prefix = `${propName} in ${componentName} must`
   const value = props[propName]
