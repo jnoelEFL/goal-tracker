@@ -8,10 +8,19 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import Gauge from '../shared/Gauge'
 import { GoalPropType, nonNegativeInteger } from '../shared/prop-types'
 
-const GoalTrackerWidget = ({ FIXME }) => {
+const GoalTrackerWidget = ({
+  goal,
+  goal: { name, units, target },
+  progress,
+  onProgress,
+}) => {
   const adderComponent =
     target > progress ? (
-      <FloatingActionButton mini secondary>
+      <FloatingActionButton
+        mini
+        secondary
+        onClick={() => onProgress && onProgress(goal)}
+      >
         <ContentAdd />
       </FloatingActionButton>
     ) : (
