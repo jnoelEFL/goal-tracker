@@ -7,6 +7,7 @@
   "scripts": {
     "build":
       "cross-env NODE_ENV=production webpack --progress --config webpack/webpack.config.js",
+    "deploy": "netlify deploy",
     "doc": "rimraf doc && groc",
     "install-exts": "node .vscode/install-recommended-exts.js",
     "lint": "eslint .",
