@@ -3,6 +3,8 @@ import { render } from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 import RedBox from 'redbox-react'
 
+import './lib/clock'
+
 import App from './App'
 
 function renderApp(RootComponent) {
