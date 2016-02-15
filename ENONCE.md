@@ -1,23 +1,16 @@
-# Exercice étape 14 : affichage (incomplet) du dialogue ajouter/modifier
+# Exercice 2 étape 14 : affichage correct du formulaire d’ajout / modification
 
-Nous venons de dérouler ensemble le code nécessaire à connecter les options de menu contextuel "Supprimer" à une boîte de dialogue dédiée, et à traiter l'annulation et la confirmation de cette question.
-
-## Objectifs
-
-1. Déclinez le cheminement de code de la suppression pour la modification, sans aller jusqu'à implémenter le `onAdd` à ce stade.
-2. Implémentez également le bouton Ajouter pour ouvrir le dialogue en mode ajout (plutôt que modification).
+Le formulaire d’ajout/modification ne se met pas à jour correctement : il reste vide. Nous avons vu que cela est dû au cycle de vie de `<AddSettingDialog/>` au sein de `<SettingsScreen/>`, et le squelette de cette méthode est prêt à remplir.
 
 ## Étapes
 
-1. Déclinez `openGoalDeleter` en `openGoalEditor`.
-2. Appelez-la dans le `onEditClick` des `GoalSetting`s
-3. Ajoutez le `AddSettingDialog`, paramétré de façon similaire au `DeleteSettingDialog` mais sans `onDelete` ni `onAdd`, et sensible à la valeur de `this.state.dialog` que vous aurez définie en (1).
-4. Déclinez `openGoalEditor` en `openGoalAdder`.
-5. Appelez-la dans le `onClick` du `RaisedButton`
+1. Assurez-vous que la demande de modification d’un objectif, en fournissant une _prop_ `goal` à jour à `<AddSettingDialog/>`, remplisse bien le formulaire.
+2. Assurez-vous qu’une demande d’ajout d’objectif ultérieure à une demande de modification « réinitialise » bien le formulaire.
 
 ## Astuces
 
-`openGoalAdder` n'a aucun argument à recevoir ; du coup, pensez à simplifier son appel depuis le JSX, et à le déclarer de façon à garantir le `this` à l'intérieur.
+La syntaxe de _spread_ sur objets est votre amie. Et n’oubliez pas `DEFAULT_STATE`.
 
-Le formulaire d'ajout/modification décline bien ses titres et boutons, mais les champs restent obstinément gelés sur leurs valeurs par défaut…  Sauras-tu comprendre pourquoi en regardant le code de `AddSettingDialog` et la façon dont ton propre code l'instancie ?
+## Bonus
 
+Pouvez-vous deviner pourquoi il est important que le `DEFAULT_STATE` de `<AddSettingDialog/>` précise `id: undefined` ? Si oui, testez le scénario dangereux en commentant cette propriété pour confirmer votre hypothèse.

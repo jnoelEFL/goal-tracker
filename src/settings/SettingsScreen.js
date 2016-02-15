@@ -51,8 +51,17 @@ class SettingsScreen extends Component {
     this.closeDialogs()
   }
 
+  @autobind
+  openGoalAdder() {
+    this.setState({ goal: {}, dialog: 'add-or-update' })
+  }
+
   openGoalDeleter(goal) {
     this.setState({ goal, dialog: 'delete' })
+  }
+
+  openGoalEditor(goal) {
+    this.setState({ goal, dialog: 'add-or-update' })
   }
 
   render() {
@@ -89,6 +98,7 @@ class SettingsScreen extends Component {
                     goal={goal}
                     key={goal.id}
                     onDeleteClick={() => this.openGoalDeleter(goal)}
+                    onEditClick={() => this.openGoalEditor(goal)}
                   />
                 ))}
                 {goals.length === 0 && (
@@ -100,15 +110,21 @@ class SettingsScreen extends Component {
               <RaisedButton
                 icon={<ContentAdd />}
                 label="Ajouter un objectif"
+                onClick={this.openGoalAdder}
                 primary
               />
             </CardActions>
           </Card>
+          <AddSettingDialog
+            goal={this.state.goal}
+            onCancel={this.closeDialogs}
+            open={this.state.dialog === 'add-or-update'}
+          />
           <DeleteSettingDialog
             goal={this.state.goal}
-            open={this.state.dialog === 'delete'}
             onCancel={this.closeDialogs}
             onDelete={this.deleteSelectedGoal}
+            open={this.state.dialog === 'delete'}
           />
         </div>
       </DocumentTitle>
