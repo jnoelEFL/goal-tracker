@@ -1,8 +1,14 @@
+// Progressions du jour (spec reducer)
+// ===================================
+
 import { expect } from 'chai'
 
 import reducer, { progressOnGoal } from './todaysProgress'
 
+// Le *reducer* est censé…
 describe('Today’s Progress reducer', () => {
+  // …fournir son état par défaut
+  // ----------------------------
   it('should return its initial state', () => {
     const initialState = undefined
     const expectedState = {}
@@ -10,25 +16,31 @@ describe('Today’s Progress reducer', () => {
     expect(reducer(initialState, {})).to.deep.equal(expectedState)
   })
 
+  // …gérer les demandes de progression
+  // ----------------------------------
   it('should handle goal progression', () => {
     let initialState = {}
 
+    // 1. Progression à incrément explicite, sur départ vide
     let expectedState = { 1: 2 }
     expect(reducer(initialState, progressOnGoal(1, 2))).to.deep.equal(
       expectedState
     )
 
+    // 2. Progression à incrément implicite, sur départ vide
     expectedState = { 1: 1 }
     expect(reducer(initialState, progressOnGoal(1))).to.deep.equal(
       expectedState
     )
 
+    // 3. Progression à incrément implicite, sur progression existante
     initialState = { 1: 1 }
     expectedState = { 1: 2 }
     expect(reducer(initialState, progressOnGoal(1))).to.deep.equal(
       expectedState
     )
 
+    // 4. Progression à incrément implicite, sur progressions autres
     initialState = { 1: 2 }
     expectedState = { 1: 2, 2: 1 }
     expect(reducer(initialState, progressOnGoal(2))).to.deep.equal(

@@ -1,3 +1,12 @@
+// Paramètres (conteneur)
+// ======================
+
+// Ce conteneur est particulièrement intéressant car il illustre de nombreux
+// aspects de React et ES6.  On y trouve notamment un import “espace de noms”,
+// une surcharge de constructeur, des méthodes métier décorées ou non, des
+// méthodes de cycle de vie de composant React, et le recours à `bindActionCreators`
+// et `mapDispatchToProps`.  Pas mal!
+
 import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -25,6 +34,9 @@ import GoalSetting from './GoalSetting'
 
 const DEFAULT_STATE = { goal: {}, dialog: null }
 
+// Le composant conteneur
+// ----------------------
+
 class SettingsScreen extends Component {
   static propTypes = {
     addGoal: PropTypes.func.isRequired,
@@ -35,11 +47,16 @@ class SettingsScreen extends Component {
     updateGoal: PropTypes.func.isRequired,
   }
 
+  // Lorsqu’une classe ES6 de composant React a un état transient
+  // (`this.state`), la norme est de l'initialiser à la construction
+  // (par défaut, il vaut `null`).
   constructor(...args) {
     super(...args)
     this.state = DEFAULT_STATE
   }
 
+  // Pour plus de détails sur cette syntaxe `@autobind`, voyez la documentation
+  // du conteneur de connexion.
   @autobind
   addOrUpdateGoal({ id, name, target, units, keepOpen }) {
     const { addGoal, updateGoal } = this.props
@@ -87,6 +104,10 @@ class SettingsScreen extends Component {
     )
 
     return (
+      // Enrobage par un
+      // [`<DocumentTitle>`](https://github.com/gaearon/react-document-title)
+      // pour modifier automatiquement le titre de la fenêtre lorsqu’on affiche
+      // ce composant conteneur.
       <DocumentTitle title="Mes paramètres">
         <div>
           <FlatButton
@@ -111,6 +132,10 @@ class SettingsScreen extends Component {
                   <GoalSetting
                     goal={goal}
                     key={goal.id}
+                    // Remarquez que puisqu’on a besoin de passer un argument à nos
+                    // méthodes ici, on doit utiliser une fonction dédiée, et comme
+                    // c'est une fonction fléchée, on préserve le `this`.  Du coup,
+                    // inutile de décorer ces deux méthodes par `@autobind`.
                     onDeleteClick={() => this.openGoalDeleter(goal)}
                     onEditClick={() => this.openGoalEditor(goal)}
                   />
@@ -124,6 +149,8 @@ class SettingsScreen extends Component {
               <RaisedButton
                 icon={<ContentAdd />}
                 label="Ajouter un objectif"
+                // En revanche, ici, on passe une référence (et pareil pour les
+                // dialogues ci-après), du coup les méthodes concernées sont *bound*.
                 onClick={this.openGoalAdder}
                 primary
               />
@@ -146,8 +173,27 @@ class SettingsScreen extends Component {
   }
 }
 
+// Connexion au *store* Redux
+// --------------------------
+
+// On s’intéresse uniquement aux champs `goals` et `currentUser` de l’état global,
+// qu’on veut retrouver dans nos propriétés sous les mêmes noms.  Par ricochet,
+// seuls les changements apportés à ces champs entraîneront un éventuel *re-render*
+// de notre conteneur.
 const mapStateToProps = ({ goals, currentUser }) => ({ goals, currentUser })
 
+// C’est [`connect(…)`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options),
+// fourni par Redux, qui fait les connexions nécessaires pour nous
+// fournir les propriétés, implémenter notre `shouldComponentUpdate(…)` et nous fournir
+// aussi une propriété `dispatch(…)`, pré-associée au *store* Redux transmis via le
+// contexte React.
+//
+// Voici le seul exemple de `mapDispatchToProps` de l’application.  On s'en sert
+// pour fournir comme propriétés des fonctions qui ne sont pas juste les *action
+// creators* nus (qui renverraient simplement le descripteur d'action), mais carrément
+// des *appels `dispatch` préconfigurés.  Puisqu’ici on passe un objet plutôt que notre
+// propre implémentation, il applique ce comportement par défaut en supposant que toutes
+// les valeurs de l’objet sont des *action creators*.
 export default connect(mapStateToProps, {
   addGoal,
   logOut,

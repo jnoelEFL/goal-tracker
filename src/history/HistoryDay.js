@@ -1,3 +1,8 @@
+// Journée d’historique
+// ====================
+
+// Section de l'écran d’historique, dédiée à un jour précis.
+
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -24,6 +29,7 @@ const HistoryDay = ({ goals, stats: { date, progresses } }) => (
   </div>
 )
 
+// Comme toujours, on définit les propriétés attendues/autorisées pour validation.
 HistoryDay.propTypes = {
   goals: PropTypes.arrayOf(GoalPropType).isRequired,
   stats: HistoryDayStatsPropType.isRequired,
