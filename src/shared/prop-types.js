@@ -18,6 +18,13 @@ export const GoalPropType = PropTypes.shape({
   units: PropTypes.string.isRequired,
 })
 
+export const LoginStatePropType = PropTypes.oneOf([
+  'logged-out',
+  'pending',
+  'success',
+  'failure',
+])
+
 export const TodaysProgressPropType = and([
   keysOf(nonNegativeIntegerString),
   PropTypes.objectOf(nonNegativeInteger),

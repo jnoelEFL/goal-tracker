@@ -5,16 +5,19 @@ import { connect } from 'react-redux'
 
 import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card'
 import RaisedButton from 'material-ui/RaisedButton'
+import Snackbar from 'material-ui/Snackbar'
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward'
 import TextField from 'material-ui/TextField'
 
 import './LoginScreen.styl'
 
 import { logIn } from '../reducers/currentUser'
+import { LoginStatePropType } from '../shared/prop-types'
 
 export class LoginScreen extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    loginState: LoginStatePropType.isRequired,
   }
 
   @autobind
@@ -24,6 +27,20 @@ export class LoginScreen extends Component {
   }
 
   render() {
+    const { loginState } = this.props
+    const loggingIn = loginState === 'pending'
+    const logInIcon = loggingIn ? null : <ArrowForward />
+    const snackBar =
+      loginState === 'failure' ? (
+        <Snackbar
+          autoHideDuration={2000}
+          message="Identifiant ou mot de passe invalide"
+          open
+        />
+      ) : (
+        ''
+      )
+
     return (
       <form onSubmit={this.login}>
         <Card className="loginScreen">
@@ -53,7 +70,8 @@ export class LoginScreen extends Component {
           </CardText>
           <CardActions style={{ textAlign: 'center' }}>
             <RaisedButton
-              icon={<ArrowForward />}
+              disabled={loggingIn}
+              icon={logInIcon}
               label="Connecte-toi"
               labelPosition="before"
               primary
@@ -61,9 +79,12 @@ export class LoginScreen extends Component {
             />
           </CardActions>
         </Card>
+        {snackBar}
       </form>
     )
   }
 }
 
-export default connect()(LoginScreen)
+const mapStateToProps = ({ currentUser: { loginState } }) => ({ loginState })
+
+export default connect(mapStateToProps)(LoginScreen)
