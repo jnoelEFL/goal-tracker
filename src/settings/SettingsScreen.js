@@ -23,6 +23,8 @@ import AddSettingDialog from './AddSettingDialog'
 import DeleteSettingDialog from './DeleteSettingDialog'
 import GoalSetting from './GoalSetting'
 
+const DEFAULT_STATE = { goal: {}, dialog: null }
+
 class SettingsScreen extends Component {
   static propTypes = {
     addGoal: PropTypes.func.isRequired,
@@ -31,6 +33,26 @@ class SettingsScreen extends Component {
     logOut: PropTypes.func.isRequired,
     removeGoal: PropTypes.func.isRequired,
     updateGoal: PropTypes.func.isRequired,
+  }
+
+  constructor(...args) {
+    super(...args)
+    this.state = DEFAULT_STATE
+  }
+
+  @autobind
+  closeDialogs() {
+    this.setState(DEFAULT_STATE)
+  }
+
+  @autobind
+  deleteSelectedGoal() {
+    this.props.removeGoal(this.state.goal.id)
+    this.closeDialogs()
+  }
+
+  openGoalDeleter(goal) {
+    this.setState({ goal, dialog: 'delete' })
   }
 
   render() {
@@ -62,7 +84,13 @@ class SettingsScreen extends Component {
               <Divider />
               <List>
                 <Subheader>Mes objectifs</Subheader>
-                {goals.map((goal) => <GoalSetting goal={goal} key={goal.id} />)}
+                {goals.map((goal) => (
+                  <GoalSetting
+                    goal={goal}
+                    key={goal.id}
+                    onDeleteClick={() => this.openGoalDeleter(goal)}
+                  />
+                ))}
                 {goals.length === 0 && (
                   <ListItem secondaryText="Aucun objectif pour le moment" />
                 )}
@@ -76,6 +104,12 @@ class SettingsScreen extends Component {
               />
             </CardActions>
           </Card>
+          <DeleteSettingDialog
+            goal={this.state.goal}
+            open={this.state.dialog === 'delete'}
+            onCancel={this.closeDialogs}
+            onDelete={this.deleteSelectedGoal}
+          />
         </div>
       </DocumentTitle>
     )
