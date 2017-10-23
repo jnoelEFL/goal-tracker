@@ -65,7 +65,17 @@ function closePreviousDay() {
 
 function notify({ title, text, icon, secondsVisible = 0 }) {
   if (!permissionGranted) {
+    return
   }
 
-  // Votre code ici
+  const notif = new window.Notification(title, {
+    body: text,
+    tag: 'goal-tracker',
+    icon,
+  })
+  if (secondsVisible > 0) {
+    notif.addEventListener('show', () => {
+      setTimeout(() => notif.close(), secondsVisible * 1000)
+    })
+  }
 }
