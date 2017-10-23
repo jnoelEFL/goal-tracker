@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import { Card, CardActions, CardText, CardTitle } from 'material-ui/Card'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -53,4 +54,10 @@ export class TrackerScreen extends Component {
   }
 }
 
-export default TrackerScreen
+const mapStateToProps = ({ goals, today, todaysProgress }) => ({
+  goals,
+  today,
+  todaysProgress,
+})
+
+export default connect(mapStateToProps)(TrackerScreen)
