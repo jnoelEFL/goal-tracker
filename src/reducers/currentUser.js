@@ -37,7 +37,18 @@ export default function reduceCurrentUser(
 // ---------------
 
 export function logIn(email, password) {
-  // return { type: LOGIN, payload: { email, password } }
+  const body = JSON.stringify({ email, password })
+
+  return {
+    type: LOGIN_START,
+    meta: {
+      offline: {
+        effect: { url: '/api/v1/sessions', method: 'POST', body },
+        commit: { type: LOGIN_SUCCESS, payload: { email } },
+        rollback: { type: LOGIN_FAILURE },
+      },
+    },
+  }
 }
 
 export function logInFailure() {
