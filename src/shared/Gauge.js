@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 import LinearProgress from 'material-ui/LinearProgress'
@@ -11,15 +12,20 @@ import {
 import { getCompletionRatio } from '../lib/helpers'
 import { nonNegativeInteger, positiveInteger } from '../shared/prop-types'
 
-const Gauge = ({ value, max }) => (
-  <LinearProgress
-    color={gaugeColor(value, max)}
-    max={max}
-    mode="determinate"
-    style={{ height: 8 }}
-    value={value}
-  />
-)
+const Gauge = ({ value, max, now }) => {
+  if (now == null) {
+    now = new Date()
+  }
+  return (
+    <LinearProgress
+      color={gaugeColor(value, max, now)}
+      max={max}
+      mode="determinate"
+      style={{ height: 8 }}
+      value={value}
+    />
+  )
+}
 
 Gauge.defaultProps = {
   max: 100,
@@ -29,10 +35,11 @@ Gauge.defaultProps = {
 Gauge.propTypes = {
   value: nonNegativeInteger.isRequired,
   max: positiveInteger,
+  now: PropTypes.any,
 }
 
-function gaugeColor(current, target) {
-  const ratio = getCompletionRatio(current, target)
+function gaugeColor(current, target, now) {
+  const ratio = getCompletionRatio(current, target, now)
 
   if (ratio < 0.5) {
     return red500

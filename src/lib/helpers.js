@@ -37,8 +37,8 @@ export function formatDate(date, format) {
 //
 // Utilisé notamment pour les codes couleurs des jauges, mais aussi d’une manière générale pour déterminer
 // si on est en retard à des moments donnés de la journée.
-export function getCompletionRatio(current, target) {
-  const todaysRatio = moment().diff(moment().startOf('day'), 'day', true)
+export function getCompletionRatio(current, target, now) {
+  const todaysRatio = moment(now).diff(moment().startOf('day'), 'day', true)
   const targetRatio = target > 0 ? current / target : 1
 
   return todaysRatio > 0 ? targetRatio / todaysRatio : 1

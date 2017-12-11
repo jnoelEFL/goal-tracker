@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
 import React from 'react'
-import sinon from 'sinon'
 
 import Gauge from './Gauge'
 
@@ -24,13 +23,9 @@ describe('<Gauge />', () => {
   })
 
   it('should otherwise match the expected snapshot', () => {
-    const mock = sinon.useFakeTimers()
-    try {
-      const wrapper = shallow(<Gauge value={50} />)
+    const now = new Date(Date.UTC(2017, 11, 12, 12, 0, 0, 0))
+    const wrapper = shallow(<Gauge value={50} now={now} />)
 
-      expect(wrapper).to.matchSnapshot()
-    } finally {
-      mock.restore()
-    }
+    expect(wrapper).to.matchSnapshot()
   })
 })
