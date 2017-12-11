@@ -41,6 +41,20 @@ class SettingsScreen extends Component {
   }
 
   @autobind
+  addOrUpdateGoal({ id, name, target, units, keepOpen }) {
+    const { addGoal, updateGoal } = this.props
+    if (id !== undefined) {
+      updateGoal(id, name, target, units)
+      keepOpen = false
+    } else {
+      addGoal(name, target, units)
+    }
+    if (!keepOpen) {
+      this.closeDialogs()
+    }
+  }
+
+  @autobind
   closeDialogs() {
     this.setState(DEFAULT_STATE)
   }
