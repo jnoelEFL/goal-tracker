@@ -12,13 +12,14 @@ import {
 import { getCompletionRatio } from '../lib/helpers'
 import { nonNegativeInteger, positiveInteger } from '../shared/prop-types'
 
-const Gauge = ({ value, max, now }) => {
+const Gauge = ({ value, max, now, useColor }) => {
   if (now == null) {
     now = new Date()
   }
+  const props = useColor ? { color: gaugeColor(value, max, now) } : {}
   return (
     <LinearProgress
-      color={gaugeColor(value, max, now)}
+      {...props}
       max={max}
       mode="determinate"
       style={{ height: 8 }}
@@ -29,6 +30,7 @@ const Gauge = ({ value, max, now }) => {
 
 Gauge.defaultProps = {
   max: 100,
+  useColor: true,
 }
 
 // Comme toujours, on définit les propriétés attendues/autorisées pour validation.
@@ -36,6 +38,7 @@ Gauge.propTypes = {
   value: nonNegativeInteger.isRequired,
   max: positiveInteger,
   now: PropTypes.any,
+  useColor: PropTypes.bool.isRequired,
 }
 
 function gaugeColor(current, target, now) {

@@ -14,7 +14,7 @@ const HistoryDayGoal = ({
 }) => {
   const details = (
     <div>
-      <Gauge value={progress} max={target} />
+      <Gauge value={progress} max={target} useColor={false} />
       {progress} {units} sur {target}
     </div>
   )

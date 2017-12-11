@@ -22,6 +22,12 @@ describe('<Gauge />', () => {
     expect(wrapper).to.have.prop('max', 75)
   })
 
+  it('should avoid setting a color when `color={false}`', () => {
+    const wrapper = shallow(<Gauge value={50} useColor={false} />)
+
+    expect(wrapper).not.to.have.prop('color')
+  })
+
   it('should otherwise match the expected snapshot', () => {
     const now = new Date(Date.UTC(2017, 11, 12, 12, 0, 0, 0))
     const wrapper = shallow(<Gauge value={50} now={now} />)
