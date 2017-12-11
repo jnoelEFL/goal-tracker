@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -10,15 +11,22 @@ import SettingsIcon from 'material-ui/svg-icons/action/settings'
 import './TrackerScreen.styl'
 
 import { formatDate, getDayCounts } from '../lib/helpers'
+import { progressOnGoal } from '../reducers/todaysProgress'
 import Gauge from '../shared/Gauge'
 import { GoalPropType, TodaysProgressPropType } from '../shared/prop-types'
 import GoalTrackerWidget from './GoalTrackerWidget'
 
 export class TrackerScreen extends Component {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     goals: PropTypes.arrayOf(GoalPropType).isRequired,
     today: PropTypes.string.isRequired,
     todaysProgress: TodaysProgressPropType.isRequired,
+  }
+
+  @autobind
+  markGoalProgression({ id }) {
+    this.props.dispatch(progressOnGoal(id))
   }
 
   overallProgress() {
@@ -41,6 +49,7 @@ export class TrackerScreen extends Component {
             <GoalTrackerWidget
               goal={goal}
               key={goal.id}
+              onProgress={this.markGoalProgression}
               progress={todaysProgress[goal.id] || 0}
             />
           ))}
