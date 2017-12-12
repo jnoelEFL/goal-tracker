@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Suez+One')
+
+html, body, #root, .layout {
+  margin 0
+  padding 0
+  height 100%
+}
+
+.layout {
+  display flex
+  flex-direction  column
+  align-items stretch
+
+  & > header {
+    font-family 'Suez One', serif
+    font-size 3em;
+    padding 0.2em 0
+    text-align center
+    color #1eb9d7
+  }
+
+  & > footer {
+    border-top 1px solid silver
+    font-family 'Open Sans', sans serif
+    padding 1em 0
+    text-align center
+    color silver
+  }
+
+  & > main {
+    flex-grow 1
+  }
+}
